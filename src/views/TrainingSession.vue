@@ -56,16 +56,16 @@
 
             <!-- Stats -->
             <div class="grid grid-cols-3 gap-4 mb-6">
-              <div class="bg-green-50 p-4 rounded-lg text-center">
-                <div class="text-2xl font-bold text-green-600">{{ currentExercise.sets }}</div>
+              <div class="bg-green-50 p-1 rounded-lg text-center">
+                <div class="text-1xl font-bold text-green-600">{{ currentExercise.sets }}</div>
                 <div class="text-sm text-gray-600">Подходов</div>
               </div>
-              <div class="bg-blue-50 p-4 rounded-lg text-center">
-                <div class="text-2xl font-bold text-blue-600">{{ currentExercise.reps }}</div>
+              <div class="bg-blue-50 p-1 rounded-lg text-center">
+                <div class="text-1xl font-bold text-blue-600">{{ currentExercise.reps }}</div>
                 <div class="text-sm text-gray-600">Повторений</div>
               </div>
-              <div class="bg-purple-50 p-4 rounded-lg text-center">
-                <div class="text-2xl font-bold text-purple-600">{{ currentExercise.difficulty }}</div>
+              <div class="bg-purple-50 p-1 rounded-lg text-center">
+                <div class="text-1xl font-bold text-purple-600">{{ currentExercise.difficulty }}</div>
                 <div class="text-sm text-gray-600">Сложность</div>
               </div>
             </div>

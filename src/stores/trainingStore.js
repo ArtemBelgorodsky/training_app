@@ -3,7 +3,7 @@ import { ref } from 'vue';
 
 export const useTrainingStore = defineStore('training', () => {
   const testQuestions = ref([
-    // Блок 1: Базовая физическая подготовка
+    // Новый упрощенный входной тест - только выбор ответа
     {
       id: 1,
       question: 'Сколько отжиманий вы можете сделать без перерыва?',
@@ -32,19 +32,6 @@ export const useTrainingStore = defineStore('training', () => {
     },
     {
       id: 3,
-      question:
-        'Введите количество отжиманий, которое вы можете сделать прямо сейчас:',
-      type: 'input',
-      category: 'practical',
-      placeholder: 'Введите число отжиманий',
-      minValue: 0,
-      maxValue: 100,
-      inputType: 'number',
-    },
-
-    // Блок 2: Выносливость
-    {
-      id: 4,
       question: 'Сколько минут вы можете держать планку?',
       type: 'multiple',
       category: 'endurance',
@@ -57,7 +44,7 @@ export const useTrainingStore = defineStore('training', () => {
       ],
     },
     {
-      id: 5,
+      id: 4,
       question: 'Сколько времени вы можете непрерывно бежать?',
       type: 'multiple',
       category: 'endurance',
@@ -69,10 +56,8 @@ export const useTrainingStore = defineStore('training', () => {
         { text: 'Более 30 минут', value: 4 },
       ],
     },
-
-    // Блок 3: Гибкость и координация
     {
-      id: 6,
+      id: 5,
       question: 'Можете ли вы сесть на шпагат?',
       type: 'multiple',
       category: 'flexibility',
@@ -84,7 +69,7 @@ export const useTrainingStore = defineStore('training', () => {
       ],
     },
     {
-      id: 7,
+      id: 6,
       question: 'Как долго вы можете стоять на одной ноге с закрытыми глазами?',
       type: 'multiple',
       category: 'coordination',
@@ -95,10 +80,8 @@ export const useTrainingStore = defineStore('training', () => {
         { text: 'Более 20 секунд', value: 3 },
       ],
     },
-
-    // Блок 4: Активность и опыт
     {
-      id: 8,
+      id: 7,
       question: 'Как часто вы тренировались в последние 3 месяца?',
       type: 'multiple',
       category: 'activity',
@@ -111,7 +94,7 @@ export const useTrainingStore = defineStore('training', () => {
       ],
     },
     {
-      id: 9,
+      id: 8,
       question: 'Какой у вас опыт в силовых тренировках?',
       type: 'multiple',
       category: 'experience',
@@ -123,10 +106,8 @@ export const useTrainingStore = defineStore('training', () => {
         { text: 'Более 3 лет', value: 4 },
       ],
     },
-
-    // Блок 5: Здоровье и ограничения
     {
-      id: 10,
+      id: 9,
       question:
         'Есть ли у вас проблемы со здоровьем, ограничивающие тренировки?',
       type: 'multiple',
@@ -139,22 +120,7 @@ export const useTrainingStore = defineStore('training', () => {
       ],
     },
     {
-      id: 11,
-      question: 'Как часто у вас болит спина или суставы после тренировок?',
-      type: 'multiple',
-      category: 'health',
-      options: [
-        { text: 'Постоянно', value: 0 },
-        { text: 'Часто', value: 1 },
-        { text: 'Иногда', value: 2 },
-        { text: 'Редко', value: 3 },
-        { text: 'Никогда', value: 4 },
-      ],
-    },
-
-    // Блок 6: Цели и мотивация
-    {
-      id: 12,
+      id: 10,
       question: 'Какая ваша основная цель в тренировках?',
       type: 'multiple',
       category: 'goals',
@@ -164,19 +130,6 @@ export const useTrainingStore = defineStore('training', () => {
         { text: 'Похудеть', value: 2 },
         { text: 'Набрать мышечную массу', value: 3 },
         { text: 'Достичь спортивных результатов', value: 4 },
-      ],
-    },
-    {
-      id: 13,
-      question: 'Насколько вы мотивированы к регулярным тренировкам?',
-      type: 'multiple',
-      category: 'motivation',
-      options: [
-        { text: 'Совсем не мотивирован', value: 0 },
-        { text: 'Слабая мотивация', value: 1 },
-        { text: 'Умеренная мотивация', value: 2 },
-        { text: 'Высокая мотивация', value: 3 },
-        { text: 'Очень высокая мотивация', value: 4 },
       ],
     },
   ]);

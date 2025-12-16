@@ -128,9 +128,6 @@
     <footer class="bg-gray-800 text-white py-8 px-4 mt-auto">
       <div class="max-w-6xl mx-auto text-center">
         <p class="text-gray-400 mb-4">FitMaster - Система индивидуальных физических тренировок</p>
-        <p class="text-xs text-gray-500">
-          Дипломный проект | Создано на Vue 3 с Pinia и Vue Router
-        </p>
       </div>
     </footer>
   </div>

@@ -59,7 +59,7 @@
     <!-- Main content -->
     <main class="max-w-4xl mx-auto px-4 py-8">
       <!-- Quick navigation -->
-      <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
+      <div class="grid grid-cols-2 md:grid-cols-6 gap-4 mb-8">
         <RouterLink to="/dashboard" class="card text-center hover:shadow-lg transition cursor-pointer">
           <div class="text-3xl mb-2">🏠</div>
           <p class="font-medium text-gray-800 text-sm">Главная</p>
@@ -72,6 +72,11 @@
           <div class="text-3xl mb-2">📊</div>
           <p class="font-medium text-gray-800 text-sm">История</p>
         </RouterLink>
+        <!-- кнопка рекомендаций -->
+        <button @click="showRecommendations = true" class="card text-center hover:shadow-lg transition cursor-pointer bg-purple-50 border-2 border-purple-200">
+          <div class="text-3xl mb-2">💡</div>
+          <p class="font-medium text-gray-800 text-sm">Рекомендации</p>
+        </button>
         <!-- кнопка для ручной переоценки -->
         <button @click="goToReassessment" class="card text-center hover:shadow-lg transition cursor-pointer bg-blue-50 border-2 border-blue-200">
           <div class="text-3xl mb-2">⚡</div>
@@ -156,6 +161,13 @@
         </button>
       </div>
     </main>
+
+    <!-- Модальное окно рекомендаций -->
+    <RecommendationsModal
+      :isOpen="showRecommendations"
+      :userLevel="currentUser.fitnessLevel"
+      @close="showRecommendations = false"
+    />
   </div>
 </template>
 
@@ -166,6 +178,10 @@ import { useAuthStore } from '../stores/authStore'
 import { useTrainingStore } from '../stores/trainingStore'
 import { useExerciseStore } from '../stores/exerciseStore'
 import { RouterLink } from 'vue-router'
+import RecommendationsModal from '../components/RecommendationsModal.vue'
+
+// Состояние для модального окна рекомендаций
+const showRecommendations = ref(false)
 
 const router = useRouter()
 const authStore = useAuthStore()

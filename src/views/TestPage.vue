@@ -26,7 +26,7 @@
             {{ question.question }}
           </h2>
 
-          <!-- Options -->
+          <!-- Options for multiple choice -->
           <div class="space-y-3">
             <button
               v-for="option in question.options"
@@ -123,14 +123,25 @@ const selectAnswer = (option) => {
 }
 
 const nextQuestion = () => {
+  const currentQ = trainingStore.testQuestions[currentQuestion.value]
+  
   if (selectedAnswer.value) {
-    answers.value[currentQuestion.value] = selectedAnswer.value
+    answers.value[currentQuestion.value] = {
+      value: selectedAnswer.value.value,
+      type: currentQ.type,
+      questionId: currentQ.id,
+      pointsCalculation: currentQ.pointsCalculation
+    }
     selectedAnswer.value = null
 
     if (currentQuestion.value < trainingStore.testQuestions.length - 1) {
       currentQuestion.value++
       // Load saved answer for this question if exists
-      selectedAnswer.value = answers.value[currentQuestion.value] || null
+      const savedAnswer = answers.value[currentQuestion.value]
+      if (savedAnswer) {
+        const question = trainingStore.testQuestions[currentQuestion.value]
+        selectedAnswer.value = question.options.find(opt => opt.value === savedAnswer.value) || null
+      }
     } else {
       finishTest()
     }
@@ -139,9 +150,25 @@ const nextQuestion = () => {
 
 const previousQuestion = () => {
   if (currentQuestion.value > 0) {
-    answers.value[currentQuestion.value] = selectedAnswer.value
+    // Save current answer before going back
+    const currentQ = trainingStore.testQuestions[currentQuestion.value]
+    if (selectedAnswer.value) {
+      answers.value[currentQuestion.value] = {
+        value: selectedAnswer.value.value,
+        type: currentQ.type,
+        questionId: currentQ.id,
+        pointsCalculation: currentQ.pointsCalculation
+      }
+    }
+
     currentQuestion.value--
-    selectedAnswer.value = answers.value[currentQuestion.value] || null
+    // Load saved answer for previous question
+    const savedAnswer = answers.value[currentQuestion.value]
+    selectedAnswer.value = null
+    if (savedAnswer) {
+      const question = trainingStore.testQuestions[currentQuestion.value]
+      selectedAnswer.value = question.options.find(opt => opt.value === savedAnswer.value) || null
+    }
   }
 }
 
