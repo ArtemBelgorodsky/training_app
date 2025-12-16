@@ -161,22 +161,92 @@
       <!-- Programs tab -->
       <div v-if="activeTab === 'programs'" class="space-y-6">
         <div class="bg-white rounded-xl shadow-md p-6">
-          <h2 class="text-2xl font-bold text-gray-800 mb-6">Программы тренировок</h2>
-          <div class="grid md:grid-cols-3 gap-6">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800">Программы тренировок</h2>
+            <button
+              @click="showProgramEditor = true"
+              class="btn-primary"
+            >
+              + Создать программу
+            </button>
+          </div>
+
+          <!-- Programs grid -->
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div
               v-for="program in trainingStore.trainingPrograms"
               :key="program.id"
-              class="card"
+              class="card relative group"
             >
-              <h3 class="text-lg font-bold text-gray-800 mb-2">{{ program.name }}</h3>
+              <!-- Кнопки управления -->
+              <div class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity flex gap-2">
+                <button
+                  @click="editProgram(program)"
+                  class="px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 transition text-sm"
+                >
+                  ✏️
+                </button>
+                <button
+                  @click="deleteProgram(program.id)"
+                  class="px-2 py-1 bg-red-100 text-red-700 rounded hover:bg-red-200 transition text-sm"
+                >
+                  🗑️
+                </button>
+              </div>
+
+              <h3 class="text-lg font-bold text-gray-800 mb-2 pr-16">{{ program.name }}</h3>
               <p class="text-sm text-gray-600 mb-4">{{ program.description }}</p>
+              
               <div class="space-y-2 text-sm">
-                <p><strong>Уровень:</strong> {{ program.level }}</p>
-                <p><strong>Длительность:</strong> {{ program.duration }} недель</p>
-                <p><strong>Упражнений:</strong> {{ program.exercises.length }}</p>
-                <p><strong>Расписание:</strong> {{ program.schedule }}</p>
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Уровень:</span>
+                  <span class="font-medium">{{ program.level }}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Длительность:</span>
+                  <span class="font-medium">{{ program.duration }} недель</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-gray-500">Упражнений:</span>
+                  <span class="font-medium">{{ program.exercises.length }}</span>
+                </div>
+                <div class="mt-3">
+                  <span class="text-gray-500">Расписание:</span>
+                  <p class="font-medium mt-1">{{ program.schedule }}</p>
+                </div>
+              </div>
+
+              <!-- Упражнения в программе -->
+              <div class="mt-4 pt-4 border-t border-gray-200">
+                <p class="text-sm text-gray-500 mb-2">Упражнения:</p>
+                <div class="flex flex-wrap gap-1">
+                  <span
+                    v-for="exerciseId in program.exercises.slice(0, 3)"
+                    :key="exerciseId"
+                    class="px-2 py-1 bg-purple-100 text-purple-800 rounded-full text-xs"
+                  >
+                    {{ getExerciseById(exerciseId)?.name || 'Неизвестно' }}
+                  </span>
+                  <span
+                    v-if="program.exercises.length > 3"
+                    class="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs"
+                  >
+                    +{{ program.exercises.length - 3 }}
+                  </span>
+                </div>
               </div>
             </div>
+          </div>
+
+          <!-- Пустое состояние -->
+          <div v-if="trainingStore.trainingPrograms.length === 0" class="text-center py-12">
+            <p class="text-gray-500 mb-4">Пока нет созданных программ</p>
+            <button
+              @click="showProgramEditor = true"
+              class="btn-primary"
+            >
+              Создать первую программу
+            </button>
           </div>
         </div>
       </div>
@@ -231,6 +301,15 @@
         </div>
       </div>
     </main>
+
+    <!-- Модальное окно редактора программ -->
+    <ProgramEditorModal
+      :is-visible="showProgramEditor"
+      :program="editingProgram"
+      :is-edit="!!editingProgram"
+      @close="closeProgramEditor"
+      @save="handleProgramSave"
+    />
   </div>
 </template>
 
@@ -240,6 +319,7 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/authStore'
 import { useTrainingStore } from '../stores/trainingStore'
 import { useExerciseStore } from '../stores/exerciseStore'
+import ProgramEditorModal from '../components/ProgramEditorModal.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -248,6 +328,9 @@ const exerciseStore = useExerciseStore()
 
 const activeTab = ref('exercises')
 const showAddExerciseForm = ref(false)
+const showProgramEditor = ref(false)
+const editingProgram = ref(null)
+
 const newExercise = ref({
   name: '',
   description: '',
@@ -264,6 +347,7 @@ const recentSessions = computed(() => {
   return trainingStore.userSessions.slice(-10).reverse()
 })
 
+// Функции для упражнений
 const addExercise = () => {
   if (!newExercise.value.name) return
 
@@ -294,6 +378,49 @@ const deleteExercise = (id) => {
   }
 }
 
+// Функции для программ тренировок
+const getExerciseById = (id) => {
+  return exerciseStore.exercises.find(ex => ex.id === id)
+}
+
+const editProgram = (program) => {
+  editingProgram.value = { ...program }
+  showProgramEditor.value = true
+}
+
+const deleteProgram = (id) => {
+  if (confirm('Вы уверены, что хотите удалить эту программу тренировок?')) {
+    const result = trainingStore.deleteTrainingProgram(id)
+    if (!result.success) {
+      alert('Ошибка при удалении программы: ' + (result.error || 'Неизвестная ошибка'))
+    }
+  }
+}
+
+const handleProgramSave = (programData) => {
+  let result
+  if (editingProgram.value) {
+    // Редактирование существующей программы
+    result = trainingStore.updateTrainingProgram(editingProgram.value.id, programData)
+  } else {
+    // Создание новой программы
+    result = trainingStore.addTrainingProgram(programData)
+  }
+
+  if (result.success) {
+    showProgramEditor.value = false
+    editingProgram.value = null
+  } else {
+    alert('Ошибка при сохранении программы: ' + (result.error || 'Неизвестная ошибка'))
+  }
+}
+
+const closeProgramEditor = () => {
+  showProgramEditor.value = false
+  editingProgram.value = null
+}
+
+// Общие функции
 const formatDate = (date) => {
   return new Date(date).toLocaleString('ru-RU', {
     year: 'numeric',

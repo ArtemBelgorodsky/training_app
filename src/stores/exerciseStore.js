@@ -63,7 +63,8 @@ export const useExerciseStore = defineStore('exercise', () => {
       sets: 3,
       reps: 8,
       difficulty: 3,
-      image: '/------------.jpg',
+      image:
+        'https://avatars.mds.yandex.net/i?id=459dbdf601e64e099029ca278bb4a079_l-4017639-images-thumbs&n=13',
       targetGroup: 'Спина, бицепсы',
       category: 'Продвинутые',
     },
@@ -76,7 +77,8 @@ export const useExerciseStore = defineStore('exercise', () => {
       sets: 3,
       reps: 12,
       difficulty: 2,
-      image: '/-----------------.jpg',
+      image:
+        'https://i.pinimg.com/736x/7d/d5/23/7dd523fe25f4861f8ded031e76e1590a.jpg',
       targetGroup: 'Ноги, кор',
       category: 'Интенсивные',
     },
@@ -89,7 +91,8 @@ export const useExerciseStore = defineStore('exercise', () => {
       sets: 3,
       reps: 15,
       difficulty: 1,
-      image: '/----------.jpg',
+      image:
+        'https://i.pinimg.com/736x/1a/3d/57/1a3d579a03c9e71d76bd82e2c6eb8de7.jpg',
       targetGroup: 'Ягодицы, ноги',
       category: 'Базовые',
     },
@@ -102,7 +105,8 @@ export const useExerciseStore = defineStore('exercise', () => {
       sets: 3,
       reps: '20 на каждую ногу',
       difficulty: 2,
-      image: '/----------------.jpg',
+      image:
+        'https://avatars.mds.yandex.net/i?id=6edffaf83f9e791531dbc42091d24e50_l-4842027-images-thumbs&n=13',
       targetGroup: 'Кор, кардио',
       category: 'Интенсивные',
     },
@@ -114,7 +118,8 @@ export const useExerciseStore = defineStore('exercise', () => {
       sets: 3,
       reps: 15,
       difficulty: 2,
-      image: '/------------.jpg',
+      image:
+        'https://avatars.mds.yandex.net/i?id=0fe96f8d9c7e3f4773342ca0f223424c_l-4600825-images-thumbs&n=13',
       targetGroup: 'Пресс, кор',
       category: 'Интенсивные',
     },
@@ -127,7 +132,8 @@ export const useExerciseStore = defineStore('exercise', () => {
       sets: 3,
       reps: 8,
       difficulty: 3,
-      image: '/-----------------.jpg',
+      image:
+        'https://barfits.ru/upload/iblock/166/3j8hb104xm3zab1eyk2e02lncskrj8os/otzhimanie_na_brusyakh_kakie_myshtsy_rabotayut.jpg',
       targetGroup: 'Грудь, трицепсы, плечи',
       category: 'Продвинутые',
     },

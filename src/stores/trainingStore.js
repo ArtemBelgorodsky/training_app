@@ -821,6 +821,42 @@ export const useTrainingStore = defineStore('training', () => {
 
   // Additional functionality can be added here
 
+  // Функции для управления программами тренировок (администратор)
+  const addTrainingProgram = (program) => {
+    const newId = Math.max(...trainingPrograms.value.map((p) => p.id), 0) + 1;
+    trainingPrograms.value.push({
+      ...program,
+      id: newId,
+      exercises: program.exercises || [],
+    });
+    return { success: true, id: newId };
+  };
+
+  const updateTrainingProgram = (id, updates) => {
+    const index = trainingPrograms.value.findIndex((p) => p.id === id);
+    if (index !== -1) {
+      trainingPrograms.value[index] = {
+        ...trainingPrograms.value[index],
+        ...updates,
+      };
+      return { success: true };
+    }
+    return { success: false, error: 'Программа не найдена' };
+  };
+
+  const deleteTrainingProgram = (id) => {
+    const index = trainingPrograms.value.findIndex((p) => p.id === id);
+    if (index !== -1) {
+      trainingPrograms.value.splice(index, 1);
+      return { success: true };
+    }
+    return { success: false, error: 'Программа не найдена' };
+  };
+
+  const getTrainingProgramById = (id) => {
+    return trainingPrograms.value.find((p) => p.id === id);
+  };
+
   return {
     testQuestions,
     reassessmentQuestions,
@@ -836,5 +872,9 @@ export const useTrainingStore = defineStore('training', () => {
     isTrainingDay,
     simulateTraining,
     runAutoTraining,
+    addTrainingProgram,
+    updateTrainingProgram,
+    deleteTrainingProgram,
+    getTrainingProgramById,
   };
 });
